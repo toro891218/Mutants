@@ -1,0 +1,178 @@
+swagger: "2.0"
+info:
+  title: "API Magneto - Validador de Mutantes"
+  description: "Proyecto que detecta si un humano es mutante basándose en su secuencia de ADN."
+  version: "1.0.0"
+  termsOfService: ""
+  contact:
+    email: "toro891218@gmail.com"
+host: "URL_AWS"
+basePath: "/mercadolibre/challenge"
+tags:
+- name: "Mutants"
+  description: "Validación de mutantes"
+- name: "stats"
+  description: "Metricas de validación de mutantes y humanos"
+
+schemes:
+- "https"
+- "http"
+
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:pets: "modify pets in your account"
+      read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+paths:
+  /mutants:
+    post:
+      tags:
+      - "Mutants"
+      summary: "Validar ADN de un humano para detectar mutantes"
+      description: "Este metodo a partir de la cadena de ADN de un humano puede detectar si es o no un mutante"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "reqValidateMutant"
+        description: "ADN que se quiere validar, El ADN ingresado debe cumplir las siguientes condiciones: ADN se representa como un array de Strings que representan cada fila de una tabla
+          de (NxN) con la secuencia del ADN. Las letras de los Strings solo pueden ser: (A,T,C,G), las
+          cuales representa cada base nitrogenada del ADN."
+        required: true
+        schema:
+          $ref: "#/definitions/reqValidateMutant"
+      responses:
+        200:
+          description: "Is Mutant"
+        403:
+          description: "Is Not Mutant"
+        400:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/failure"
+        500:
+          description: "Error interno del servidor."
+        502:
+          description: "Error en la respuesta del proveedor del servicio."
+        503:
+          description: "Servicio no disponible."
+        504:
+          description: "Tiempo de respuesta del proveedor del servicio excedido."
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+  /stats:
+    get:
+      tags:
+      - "stats"
+      summary: "Validar ADN de un humano para detectar mutantes"
+      description: "Este metodo retorna las estadisticas de las verificaciones de ADN realizadas"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Succes"
+          schema:
+            $ref: "#/definitions/resStats"
+        403:
+          description: "Is Not Mutant"
+        400:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/failure"
+        500:
+          description: "Error interno del servidor."
+        502:
+          description: "Error en la respuesta del proveedor del servicio."
+        503:
+          description: "Servicio no disponible."
+        504:
+          description: "Tiempo de respuesta del proveedor del servicio excedido."
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"        
+definitions:
+  reqValidateMutant:
+    type: "object"
+    required:
+    - "adn"
+    properties:
+      adn:
+        type: "array"
+        items:
+          type: "string"
+        example: ["TCTATA", "ACAGTT", "GTCTGT", "AATCGG", "CCTTTC", "TCACTA"]
+  resStats:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: "3592f17f-bc93-44e3-8592-635bab997123"
+      countHumanDna:
+        type: "integer"
+        format: "int64"      
+        example: 100
+      countMutantDna:
+        type: "integer"
+        format: "int64"      
+        example: 40    
+      ratio:
+        type: "number"
+        format: "double"      
+        example: 0.4
+  failure:
+    type: "array"
+    description: "Estructura estándar que contiene los datos de trazabilidad e informació\
+      n en caso de que ocurra una excepción en la API."
+    items:
+      $ref: "#/definitions/error"
+    required:
+    - "errors"
+    properties:
+      errors:
+        type: "array"
+        uniqueItems: true
+        items:
+          $ref: "#/definitions/error"
+          
+    additionalProperties: false
+  error:
+    type: "object"
+    description: "Estructura estándar para la mensajería de excepción."
+    required:
+    - "code"
+    - "detail"
+    properties:
+      status:
+        type: "string"
+        description: "Código de estado HTTP aplicado a la excepción."
+        example: "400"      
+      errorCode:
+        type: "string"
+        description: "Código específico de la excepción."
+        example: "BASE_NITROGENDA_INVALIDA"
+      message:
+        type: "string"
+        description: "Mensaje funcional que puede ser entregado al cliente."
+        example: "La Base nitrogenda de ADN solo puede estar compuesta por A, T, C, G"      
+      errorMessage:
+        type: "string"
+        description: "Mensaje del error en tiempo de ejecución"
+        example: "La Base nitrogenda de ADN solo puede estar compuesta por [A, T, C, G]. error en cadena: DCTATA"
+    additionalProperties: false
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
