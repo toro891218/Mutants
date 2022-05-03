@@ -3,6 +3,7 @@
  
 #Required Setup
 Java 11
+SpringBoot 2.6.7
 
 #Database
 DynamoDB
