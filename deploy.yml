@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mutants-deploy
+  labels:
+    app: mutants-app
+    name: mutants-deploy
+  namespace: default
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      name: mutants-pod
+      app: mutants-app
+  template:
+    metadata:
+      name: mutants-pod 
+      labels:
+        name: mutants-pod 
+        app: mutants-app
+    spec:
+      containers:
+      - name: mutants-container
+        image: "225529910307.dkr.ecr.us-east-1.amazonaws.com/mutants:latest"
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 128Mi
+            cpu: "0.2"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5

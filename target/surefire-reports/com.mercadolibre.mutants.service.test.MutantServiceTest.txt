@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.mercadolibre.mutants.service.test.MutantServiceTest
+-------------------------------------------------------------------------------
+Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.736 s - in com.mercadolibre.mutants.service.test.MutantServiceTest
