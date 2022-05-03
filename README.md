@@ -10,10 +10,11 @@ Crear tabla: mutants y mutants_verification ambas con: Clave de partición "id (
 Agregar en el archivo application.properties ID y Key de cuent de AWS para acceder al servicio de Base de datos. 
 
 #Entregables:
-● Código Fuente (Para Nivel 2 y 3: En repositorio github): Se Entrega Codigo Fuente para punto 2 y 3
-● Instrucciones de cómo ejecutar el programa o la API. (Para Nivel 2 y 3: En README de
+
+Código Fuente (Para Nivel 2 y 3: En repositorio github): Se Entrega Codigo Fuente para punto 2 y 3
+Instrucciones de cómo ejecutar el programa o la API. (Para Nivel 2 y 3: En README de
 github). : Se agrega Swagger con especificaciones de API
-● URL de la API (Nivel 2 y 3).
+URL de la API (Nivel 2 y 3). Pendiente
 
 
 # Prueba
