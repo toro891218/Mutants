@@ -15,7 +15,7 @@ Agregar en el archivo application.properties ID y Key de cuent de AWS para acced
 Código Fuente (Para Nivel 2 y 3: En repositorio github): Se Entrega Codigo Fuente para punto 2 y 3
 Instrucciones de cómo ejecutar el programa o la API. (Para Nivel 2 y 3: En README de
 github). : Se agrega Swagger con especificaciones de API
-URL de la API (Nivel 2 y 3). Pendiente
+URL de la API (Nivel 2 y 3). Entregado
 
 
 # Prueba
