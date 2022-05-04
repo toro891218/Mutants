@@ -27,31 +27,41 @@ public class AdnVerificationService {
 	
 	public void addContHuman() {		
 		AdnVerificationModel adnVerificationModel = new AdnVerificationModel();
-		Optional<AdnVerificationModel> mutantStates = adnVerificationRepository.findById(ID_MUTANT_VERIFICATION);
-		
-		adnVerificationModel.setId(mutantStates.get().getId());
-		adnVerificationModel.setCountHumanDna(mutantStates.get().getCountHumanDna());
-		adnVerificationModel.setCountMutantDna(mutantStates.get().getCountMutantDna());
+
+		Optional<AdnVerificationModel> mutantStates = adnVerificationRepository.findById(ID_MUTANT_VERIFICATION);		
 				
-		adnVerificationModel.setCountHumanDna(adnVerificationModel.getCountHumanDna()+1);
+		if (!mutantStates.isPresent()) {
+			adnVerificationModel.setId(ID_MUTANT_VERIFICATION);
+			adnVerificationModel.setCountHumanDna(1);
+			adnVerificationModel.setCountMutantDna(0);			
+		}else {
+			adnVerificationModel.setId(mutantStates.get().getId());
+			adnVerificationModel.setCountHumanDna(mutantStates.get().getCountHumanDna());
+			adnVerificationModel.setCountMutantDna(mutantStates.get().getCountMutantDna());
+			adnVerificationModel.setCountHumanDna(adnVerificationModel.getCountHumanDna()+1);
+		}
+
 		adnVerificationModel.setRatio(setRatio(adnVerificationModel));
-		
 		adnVerificationRepository.save(adnVerificationModel);
 	}
 		
-	public void addContMutant() {
-		
-		AdnVerificationModel adnVerificationModel = new AdnVerificationModel();
+	public void addContMutant() {		
+		AdnVerificationModel adnVerificationModel = new AdnVerificationModel();		
 		Optional<AdnVerificationModel> mutantStates = adnVerificationRepository.findById(ID_MUTANT_VERIFICATION);
 
-		adnVerificationModel.setId(mutantStates.get().getId());
-		adnVerificationModel.setCountMutantDna(mutantStates.get().getCountMutantDna());
-		adnVerificationModel.setCountHumanDna(mutantStates.get().getCountHumanDna());
-		adnVerificationModel.setCountMutantDna(adnVerificationModel.getCountMutantDna()+1);
-		adnVerificationModel.setRatio(setRatio(adnVerificationModel));
+		if (!mutantStates.isPresent()) {
+			adnVerificationModel.setId(ID_MUTANT_VERIFICATION);
+			adnVerificationModel.setCountHumanDna(0);
+			adnVerificationModel.setCountMutantDna(1);			
+		} else {
+			adnVerificationModel.setId(mutantStates.get().getId());
+			adnVerificationModel.setCountMutantDna(mutantStates.get().getCountMutantDna());
+			adnVerificationModel.setCountHumanDna(mutantStates.get().getCountHumanDna());
+			adnVerificationModel.setCountMutantDna(adnVerificationModel.getCountMutantDna()+1);
+		}
 
-		adnVerificationRepository.save(adnVerificationModel);
-		
+		adnVerificationModel.setRatio(setRatio(adnVerificationModel));
+		adnVerificationRepository.save(adnVerificationModel);		
 	}
 	
 	
