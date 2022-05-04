@@ -74,8 +74,8 @@ paths:
   /stats:
     get:
       tags:
-      - "stats"
-      summary: "Validar ADN de un humano para detectar mutantes"
+      - "Stats"
+      summary: "Estadisticas de validación de ADN"
       description: "Este metodo retorna las estadisticas de las verificaciones de ADN realizadas"
       consumes:
       - "application/json"
@@ -104,6 +104,48 @@ paths:
       - petstore_auth:
         - "write:pets"
         - "read:pets"        
+  /mutants/all:
+    get:
+      tags:
+      - "Mutants"
+      summary: "Consulta de todos los humanos y mutantes validados en el sistema"
+      description: "Este metodo retorna una lista con los humanos y mutantes validados por el sistema"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Succes"
+          schema:
+            $ref: "#/definitions/resGetAll"
+        403:
+          description: "Is Not Mutant"
+        400:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/failure"
+        500:
+          description: "Error interno del servidor."
+        502:
+          description: "Error en la respuesta del proveedor del servicio."
+        503:
+          description: "Servicio no disponible."
+        504:
+          description: "Tiempo de respuesta del proveedor del servicio excedido."
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"                
+  /actuator/health:
+    head:
+      responses:
+        200:
+          description: "Metodo para  monitoreo."
+      description: "Metodo para  monitoreo."
+      tags:
+      - "Monitoring"        
+        
 definitions:
   reqValidateMutant:
     type: "object"
@@ -133,6 +175,30 @@ definitions:
         type: "number"
         format: "double"      
         example: 0.4
+
+  resGetAll:
+    type: "array"
+    description: "Lista de humanos y mutantes validados por el sistema"
+    items:
+      $ref: "#/definitions/humans"    
+  humans:
+    type: "object"
+    description: "datos de los humanos validados"
+    properties:
+      id:
+        type: "string"
+        description: "Id registrado en el sistema para el humano o mutante"
+        example: "d2def768-de65-416e-8863-be187f648c02"      
+      adn:
+        type: "array"
+        description: "Cadena de ADN del humano o mutante"
+        items:
+          type: "string"
+        example: ["TCTATA", "ACAGTT", "GTCTGT", "AATCGG", "CCTTTC", "TCACTA"]
+      isMutant:
+        type: "boolean"
+        description: "Indicador de si es mutante o humano"
+        example: "true"      
   failure:
     type: "array"
     description: "Estructura estándar que contiene los datos de trazabilidad e informació\
@@ -152,9 +218,6 @@ definitions:
   error:
     type: "object"
     description: "Estructura estándar para la mensajería de excepción."
-    required:
-    - "code"
-    - "detail"
     properties:
       status:
         type: "string"
